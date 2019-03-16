@@ -1,16 +1,14 @@
-dnl
-dnl configure.in
-dnl
-dnl Copyright (c) 2000 Dug Song <dugsong@monkey.org>
-dnl
-dnl $Id$
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
 
-AC_INIT(include/dnet.h)
+AC_PREREQ([2.69])
+AC_INIT([libdnet], [1.12])
 AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_HEADERS([include/config.h])
+AC_CONFIG_SRCDIR([include/dnet.h])
 AC_SUBST(ac_aux_dir)
-
-AM_INIT_AUTOMAKE(libdnet, 1.12)
-AM_CONFIG_HEADER(include/config.h)
+AM_INIT_AUTOMAKE
+AC_CONFIG_MACRO_DIRS([m4])
 
 dnl XXX - stop the insanity!@#$
 AM_MAINTAINER_MODE
@@ -19,22 +17,29 @@ dnl Check for system type.
 dnl XXX - we do this to qualify our later feature checks, since some
 dnl systems claim to support multiple features, but are quite b0rked.
 AC_CANONICAL_HOST
+
 dnl XXX - spoof AC_CYGWIN
 case "$host_os" in
   *cygwin*) CYGWIN=yes;;
-         *) CYGWIN=no;;
+  *) CYGWIN=no;;
 esac
 
-dnl Initialize prefix.
-if test "$prefix" = "NONE"; then
-   prefix="/usr/local"
-fi
+dnl dnl Initialize prefix.
+dnl dnl  if test "$prefix" = "NONE"; then
+dnl dnl   prefix="/usr/local"
+dnl dnl fi
 
-dnl Checks for programs.
-AC_PROG_CC
-AC_PROG_INSTALL
+# Checks for programs.
 AC_LIBTOOL_DLOPEN
+AC_PROG_CXX
+AC_PROG_AWK
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
 AM_PROG_LIBTOOL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
 
 dnl Checks for Python.
 dnl XXX - use AM_PATH_PYTHON after automake upgrade
@@ -75,11 +80,12 @@ dnl XXX - stupid IRIX cpp
 if test -r /usr/include/sgidefs.h ; then
 	CPPFLAGS="$CPPFLAGS -D__sgi"
 fi
+
 dnl XXX - we need MingW32 under Cygwin for win32
 if test "$CYGWIN" = yes ; then
 	if test -d /usr/include/mingw ; then
 		CPPFLAGS="$CPPFLAGS -mno-cygwin"
-		CFLAGS="$CFLAGS -mno-cygwin"
+ 		CFLAGS="$CFLAGS -mno-cygwin"
 		AC_DEFINE(WIN32_LEAN_AND_MEAN, 1, 
 		    [Define for faster code generation.])
 		AC_CHECK_LIB(ws2_32, main)
@@ -158,7 +164,9 @@ AC_SUBST(CHECKINC)
 AC_SUBST(CHECKLIB)
 AM_CONDITIONAL(HAVE_CHECK, test "x$CHECKLIB" != "x")
 
-dnl Checks for header files.
+# Checks for libraries.
+
+# Checks for header files.
 AC_HEADER_STDC
 if test "$CYGWIN" = yes ; then
 	AC_CHECK_HEADERS(Iphlpapi.h winsock2.h)
@@ -176,13 +184,20 @@ else
 	    netinet/ip_compat.h ip_fil.h netinet/ip_fil.h)
 	AC_CHECK_HEADERS(hpsecurity.h stropts.h)
 fi
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h netdb.h netinet/in.h nlist.h stdlib.h string.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h])
 
-dnl Checks for typedefs, structures, and compiler characteristics.
+# Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_INLINE
+AC_DNET_SOCKADDR_IN6
+AC_TYPE_OFF_T
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
-AC_DNET_SOCKADDR_IN6
+AC_TYPE_SSIZE_T
+AC_TYPE_UINT16_T
+AC_TYPE_UINT32_T
+AC_TYPE_UINT64_T
+AC_TYPE_UINT8_T
 if test "$ac_cv_header_sys_socket_h" = yes ; then
 	AC_DNET_SOCKADDR_SA_LEN
 fi
@@ -197,8 +212,11 @@ if test "$GCC" = yes ; then
    	CFLAGS="$CFLAGS -Wall"
 fi
 
-dnl Checks for library functions.
+# Checks for library functions.
+AC_FUNC_MALLOC
 AC_FUNC_MEMCMP
+AC_FUNC_REALLOC
+AC_CHECK_FUNCS([gethostbyname gettimeofday memmove memset pow socket strchr strdup strerror strncasecmp strpbrk strstr strtol strtoul])
 AC_REPLACE_FUNCS(err strlcat strlcpy strsep)
 
 dnl Checks for other system-specific jonks.
@@ -313,7 +331,16 @@ else
 	AC_LIBOBJ([tun-none])
 fi
 
-AC_OUTPUT([Makefile dnet-config include/Makefile include/dnet/Makefile
-	man/Makefile src/Makefile python/Makefile python/setup.py
-	test/Makefile test/check/Makefile test/dnet/Makefile],
+AC_CONFIG_FILES([Makefile
+		 dnet-config
+                 include/Makefile
+                 include/dnet/Makefile
+                 man/Makefile
+                 python/Makefile
+		 python/setup.py
+                 src/Makefile
+                 test/Makefile
+                 test/check/Makefile
+                 test/dnet/Makefile],
 	[chmod 755 dnet-config])
+AC_OUTPUT
