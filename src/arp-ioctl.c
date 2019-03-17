@@ -346,9 +346,6 @@ arp_loop(arp_t *r, arp_handler callback, void *arg)
 	mib_ipNetToMediaEnt arpentries[MAX_ARPENTRIES];
 	int fd, i, n, ret;
 	
-	if ((fd = open_mib("/dev/ip", O_RDWR, 0 /* XXX */, 0)) < 0)
-		return (-1);
-	
 	nm.objid = ID_ipNetToMediaTable;
 	nm.buffer = arpentries;
 	n = sizeof(arpentries);

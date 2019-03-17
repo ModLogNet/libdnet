@@ -133,9 +133,6 @@ route_loop(route_t *r, route_handler callback, void *arg)
 	mib_ipRouteEnt rtentries[MAX_RTENTRIES];
 	int fd, i, n, ret;
 	
-	if ((fd = open_mib("/dev/ip", O_RDWR, 0 /* XXX */, 0)) < 0)
-		return (-1);
-	
 	nm.objid = ID_ipRouteTable;
 	nm.buffer = rtentries;
 	n = sizeof(rtentries);

@@ -18,11 +18,6 @@ dnl XXX - we do this to qualify our later feature checks, since some
 dnl systems claim to support multiple features, but are quite b0rked.
 AC_CANONICAL_HOST
 
-dnl dnl Initialize prefix.
-dnl dnl  if test "$prefix" = "NONE"; then
-dnl dnl   prefix="/usr/local"
-dnl dnl fi
-
 # Checks for programs.
 AC_LIBTOOL_DLOPEN
 AC_PROG_CXX
@@ -70,14 +65,8 @@ AC_SUBST(TCLLIB)
 AM_CONDITIONAL(PYTHON, [test "x$PYTHON" != "x"])
 AM_CONDITIONAL(TCL, [test "x$TCLINC" != "x"])
 
-dnl XXX - stupid IRIX cpp
-if test -r /usr/include/sgidefs.h ; then
-	CPPFLAGS="$CPPFLAGS -D__sgi"
-fi
-
 dnl Checks for libraries.
 AC_LBL_LIBRARY_NET
-AC_CHECK_LIB(nm, open_mib)
 
 dnl Checks for Check.
 AC_MSG_CHECKING(for Check)
@@ -160,9 +149,7 @@ if test "$GCC" = yes ; then
 fi
 
 # Checks for library functions.
-dnl AC_FUNC_MALLOC
 AC_FUNC_MEMCMP
-dnl AC_FUNC_REALLOC
 AC_CHECK_FUNCS([gethostbyname gettimeofday memmove memset pow socket strchr strdup strerror strncasecmp strpbrk strstr strtol strtoul])
 AC_REPLACE_FUNCS(err strlcat strlcpy strsep)
 
