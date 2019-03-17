@@ -201,9 +201,7 @@ else
 fi
 
 dnl Check for firewall interface.
-if test "$ac_cv_header_Iphlpapi_h" = yes ; then
-        AC_LIBOBJ([fw-pktfilter])
-elif test "$ac_cv_header_net_pfvar_h" = yes ; then
+if test "$ac_cv_header_net_pfvar_h" = yes ; then
 	AC_LIBOBJ([fw-pf])
 elif test "$ac_cv_header_netinet_ip_fw_h" = yes ; then
 	AC_LIBOBJ([fw-ipfw])

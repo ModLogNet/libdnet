@@ -21,9 +21,6 @@
 /* Define if you have arp(7) ioctls. */
 #undef HAVE_IOCTL_ARP
 
-/* Define to 1 if you have the <Iphlpapi.h> header file. */
-#undef HAVE_IPHLPAPI_H
-
 /* Define to 1 if you have the <ip_compat.h> header file. */
 #undef HAVE_IP_COMPAT_H
 
@@ -32,9 +29,6 @@
 
 /* Define to 1 if you have the <ip_fil.h> header file. */
 #undef HAVE_IP_FIL_H
-
-/* Define to 1 if you have the `iphlpapi' library (-liphlpapi). */
-#undef HAVE_LIBIPHLPAPI
 
 /* Define to 1 if you have the `nm' library (-lnm). */
 #undef HAVE_LIBNM
