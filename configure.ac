@@ -141,18 +141,18 @@ AC_CHECK_HEADERS([arpa/inet.h \
 		  netinet/icmp6.h \
 		  netinet/if.h \
 		  netinet/in.h \
-		  netinet/in6.h \
 		  netinet/ip6.h \
+		  netinet6/in6.h \
 		  nlist.h \
 		  stdlib.h \
 		  string.h \
 		  sys/ioctl.h \
 		  sys/param.h \
 		  sys/socket.h \
+		  sys/sockio.h \
+		  sys/sysctl.h \
 		  sys/stdint.h \
-		  sys/time.h \
-		  unistd.h])
-AC_CHECK_HEADERS(sys/sockio.h sys/sysctl.h)
+		  sys/time.h])
 AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_dl.h net/pfilt.h \
 	    net/pfvar.h net/radix.h net/raw.h net/route.h netinet/in_var.h \
@@ -161,7 +161,7 @@ AC_CHECK_HEADERS(net/bpf.h \
 AC_CHECK_HEADERS([netinet/ip_compat.h], [], [],
  		 [[
  		  #include <net/if.h>
-		  #include <netinet/in6.h>
+		  #include <netinet6/in6.h>
 		  #include <netinet/ip6.h>
 		  #include <netinet/icmp6.h>
  		  ]])
