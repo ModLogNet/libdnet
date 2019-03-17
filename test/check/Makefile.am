@@ -2,8 +2,6 @@
 
 include $(top_srcdir)/Makefile.am.common
 
-INCLUDES = -I$(top_srcdir)/include @CHECKINC@
-
 if HAVE_CHECK
 TESTS = check_addr check_arp check_blob check_eth check_fw check_ip \
 	check_intf check_rand check_route
