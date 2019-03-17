@@ -142,9 +142,12 @@ AC_CHECK_HEADERS(net/bpf.h \
 	    net/pfvar.h net/radix.h net/raw.h net/route.h netinet/in_var.h \
 	    net/if_tun.h linux/if_tun.h netinet/ip_fw.h linux/ip_fw.h \
 	    linux/ip_fwchains.h linux/netfilter_ipv4/ipchains_core.h)
-AC_CHECK_HEADERS(ip_fil_compat.h netinet/ip_fil_compat.h ip_compat.h \
-	    netinet/ip_compat.h ip_fil.h netinet/ip_fil.h)
+AC_CHECK_HEADERS(netinet/ip_compat.h)
 AC_CHECK_HEADERS(hpsecurity.h stropts.h)
+AC_CHECK_HEADERS([netinet/ip_fil.h], [], [],
+		 [[
+		  #include <net/if.h>
+		  ]])
 AC_CHECK_HEADERS([net/if_arp.h], [], [],
 		 [[
 		  #include <sys/socket.h>
