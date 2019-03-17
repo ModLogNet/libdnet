@@ -135,7 +135,7 @@ fi
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h netdb.h netinet/in.h nlist.h stdlib.h string.h sys/ioctl.h sys/param.h sys/socket.h sys/stdint.h sys/time.h unistd.h])
-AC_CHECK_HEADERS(sys/ndd_var.h sys/sockio.h sys/sysctl.h)
+AC_CHECK_HEADERS(sys/sockio.h sys/sysctl.h)
 AC_CHECK_HEADERS(net/if.h)
 AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_dl.h net/pfilt.h \
@@ -193,8 +193,6 @@ elif test "$ac_cv_dnet_linux_pf_packet" = yes ; then
 	AC_LIBOBJ([eth-linux])
 elif test "$ac_cv_header_net_raw_h" = yes ; then
 	AC_LIBOBJ([eth-snoop])
-elif test "$ac_cv_header_sys_ndd_var_h" = yes ; then
-	AC_LIBOBJ([eth-ndd])
 else
 	AC_LIBOBJ([eth-none])
 fi
