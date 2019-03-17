@@ -143,7 +143,6 @@ AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_tun.h linux/if_tun.h netinet/ip_fw.h linux/ip_fw.h \
 	    linux/ip_fwchains.h linux/netfilter_ipv4/ipchains_core.h)
 AC_CHECK_HEADERS(netinet/ip_compat.h)
-AC_CHECK_HEADERS(stropts.h)
 dnl AC_CHECK_HEADERS([netinet/ip_fil.h], [], [],
 dnl 		 [[
 dnl 		  #include <net/if.h>
@@ -247,11 +246,7 @@ dnl Check for tun interface.
 if test "$ac_cv_header_linux_if_tun_h" = yes ; then
 	AC_LIBOBJ([tun-linux])
 elif test "$ac_cv_header_net_if_tun_h" = yes ; then
-	if test "$ac_cv_header_stropts_h" = yes ; then
-		AC_LIBOBJ([tun-solaris])
-	else
-		AC_LIBOBJ([tun-bsd])
-	fi
+	AC_LIBOBJ([tun-bsd])
 elif test -c "/dev/tun0" ; then
 	AC_LIBOBJ([tun-bsd])
 else

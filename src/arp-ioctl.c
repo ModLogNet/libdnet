@@ -27,7 +27,7 @@
 #include <net/if_arp.h>
 #ifdef HAVE_STREAMS_MIB2
 # include <netinet/in.h>
-# include <stropts.h>
+# include <sys/ioctl.h>
 #endif
 #include <errno.h>
 #include <fcntl.h>

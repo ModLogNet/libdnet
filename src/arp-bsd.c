@@ -16,7 +16,7 @@
 #endif
 #ifdef HAVE_STREAMS_ROUTE
 #include <sys/stream.h>
-#include <sys/stropts.h>
+#include <sys/ioctl.h>
 #endif
 
 #include <net/if.h>

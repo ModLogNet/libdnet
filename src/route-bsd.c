@@ -23,10 +23,10 @@
 #include <inet/mib2.h>
 #include <inet/ip.h>
 #undef IP_ADDR_LEN
-#include <stropts.h>
+#include <sys/ioctl.h>
 #elif defined(HAVE_STREAMS_ROUTE)
 #include <sys/stream.h>
-#include <sys/stropts.h>
+#include <sys/ioctl.h>
 #endif
 
 #define route_t	oroute_t	/* XXX - unixware */
