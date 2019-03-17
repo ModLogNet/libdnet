@@ -11,21 +11,6 @@
 #ifndef DNET_OS_H
 #define DNET_OS_H
 
-#ifdef _WIN32
-# include <winsock2.h>
-# include <windows.h>
-/* XXX */
-# undef IP_OPT_LSRR
-# undef IP_OPT_TS
-# undef IP_OPT_RR
-# undef IP_OPT_SSRR
-  typedef u_char	uint8_t;
-  typedef u_short	uint16_t;
-  typedef u_int		uint32_t;
-# ifndef __CYGWIN__
-  typedef long		ssize_t;
-# endif
-#else
 # include <sys/param.h>
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -41,7 +26,6 @@
 # else
 #  include <inttypes.h>
 # endif
-#endif
 
 #define DNET_LIL_ENDIAN		1234
 #define DNET_BIG_ENDIAN		4321
@@ -69,11 +53,6 @@
 # define DNET_BYTESEX		DNET_LIL_ENDIAN
 #elif defined (_BIT_FIELDS_HTOL)
 # define DNET_BYTESEX		DNET_BIG_ENDIAN
-#endif
-
-/* Win32 - XXX */
-#ifdef _WIN32
-# define DNET_BYTESEX		DNET_LIL_ENDIAN
 #endif
 
 /* Nastiness from old BIND code. */
@@ -116,9 +95,6 @@
 #  define __flexarr	[0]
 # else
 #  if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-#   define __flexarr	[]
-#  elif defined(_WIN32)
-/* MS VC++ */
 #   define __flexarr	[]
 #  else
 /* Some other non-C99 compiler. Approximate with [1]. */

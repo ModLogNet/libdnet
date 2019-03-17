@@ -8,10 +8,8 @@
 
 #include "config.h"
 
-#ifndef _WIN32
 #include <netinet/in.h>
 #include <unistd.h>
-#endif
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>

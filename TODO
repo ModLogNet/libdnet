@@ -18,9 +18,7 @@ ip-cooked.c: use RTM_RESOLVE for ip_lookup_mac() (GetBestInterface()?)
 
 add a way to enable ip forwarding?
 
-finish IPv6 support everywhere (fw, route, ip6, win32, etc.)
-
-reimplement win32 fw (lost with laptop hd crash!@#$%)
+finish IPv6 support everywhere (fw, route, ip6 etc.)
 
 NAT, ipsec interface?
 
@@ -48,8 +46,6 @@ bsdi    |      |     |     |  7 |    |      |       |  -  |
 tru64   |      |     |     |  7 |    |      |       |  -  |
 --------+------+-----+-----+----+----+------+-------+-----+
 hp-ux   |      |     |     |  7 |    |   3  |       |  -  |
---------+------+-----+-----+----+----+------+-------+-----+
-win32   |      |     |     |    |    |   3  |       |  -  |
 --------+------+-----+-----+----+----+------+-------+-----+
 unixware|      |  -  |  2  |  - |  - |      |   4   |  -  |
 --------+------+-----+-----+----+----+------+-------+-----+

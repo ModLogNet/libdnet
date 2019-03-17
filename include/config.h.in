@@ -202,9 +202,6 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
-/* Define to 1 if you have the <winsock2.h> header file. */
-#undef HAVE_WINSOCK2_H
-
 /* Name of package */
 #undef PACKAGE
 
@@ -229,9 +226,6 @@
 /* Version number of package */
 #undef VERSION
 
-/* Define for faster code generation. */
-#undef WIN32_LEAN_AND_MEAN
-
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
@@ -247,15 +241,7 @@
 /* Define to `unsigned' if <sys/types.h> does not define. */
 #undef size_t
 
-/* Use MingW32's internal snprintf */
-#undef snprintf
-
 #include <sys/types.h>
-
-#ifdef HAVE_WINSOCK2_H
-# include <winsock2.h>
-# include <windows.h>
-#endif
 
 #ifdef __svr4__
 # define BSD_COMP	1

@@ -18,12 +18,6 @@ dnl XXX - we do this to qualify our later feature checks, since some
 dnl systems claim to support multiple features, but are quite b0rked.
 AC_CANONICAL_HOST
 
-dnl XXX - spoof AC_CYGWIN
-case "$host_os" in
-  *cygwin*) CYGWIN=yes;;
-  *) CYGWIN=no;;
-esac
-
 dnl dnl Initialize prefix.
 dnl dnl  if test "$prefix" = "NONE"; then
 dnl dnl   prefix="/usr/local"
@@ -81,51 +75,9 @@ if test -r /usr/include/sgidefs.h ; then
 	CPPFLAGS="$CPPFLAGS -D__sgi"
 fi
 
-dnl XXX - we need MingW32 under Cygwin for win32
-if test "$CYGWIN" = yes ; then
-	if test -d /usr/include/mingw ; then
-		CPPFLAGS="$CPPFLAGS -mno-cygwin"
- 		CFLAGS="$CFLAGS -mno-cygwin"
-		AC_DEFINE(WIN32_LEAN_AND_MEAN, 1, 
-		    [Define for faster code generation.])
-		AC_CHECK_LIB(ws2_32, main)
-		AC_CHECK_LIB(iphlpapi, main)
-		AC_DEFINE(snprintf, _snprintf, 
-		    [Use MingW32's internal snprintf])
-	else
-		AC_MSG_ERROR([need MingW32 package to build under Cygwin])
-	fi
-	AC_MSG_CHECKING(for WinPcap developer's pack)
-	AC_ARG_WITH(wpdpack,
-	[  --with-wpdpack=DIR      use WinPcap developer's pack in DIR],
-	[ AC_MSG_RESULT($withval)
-	  if test -f $withval/include/packet32.h -a -f $withval/lib/packet.lib; then
-	     owd=`pwd`
-	     if cd $withval; then withval=`pwd`; cd $owd; fi
-	     CFLAGS="$CFLAGS -I$withval/include"
-	     LIBS="$LIBS -L$withval/lib -lpacket"
-	  else
-	     AC_MSG_ERROR(packet32.h or packet.lib not found in $withval)
-	  fi ],
-	[ for dir in ${prefix} ${HOME}/WPdpack ; do
-	     if test -f ${dir}/include/packet32.h -a -f ${dir}/lib/packet.lib; then
-	        CFLAGS="$CFLAGS -I${dir}/include"
-		LIBS="$LIBS -L${dir}/lib -lpacket"
-		have_pcap=yes
-		break;
-	     fi
-	  done
-	  if test "$have_pcap" != yes; then
-	     AC_MSG_ERROR(WinPcap developer's pack not found)
-	  fi
-	  AC_MSG_RESULT(yes) ])
-fi
-
 dnl Checks for libraries.
-if test "$CYGWIN" != yes ; then
-	AC_LBL_LIBRARY_NET
-	AC_CHECK_LIB(nm, open_mib)
-fi
+AC_LBL_LIBRARY_NET
+AC_CHECK_LIB(nm, open_mib)
 
 dnl Checks for Check.
 AC_MSG_CHECKING(for Check)
@@ -168,21 +120,17 @@ AM_CONDITIONAL(HAVE_CHECK, test "x$CHECKLIB" != "x")
 
 # Checks for header files.
 AC_HEADER_STDC
-if test "$CYGWIN" = yes ; then
-	AC_CHECK_HEADERS(Iphlpapi.h winsock2.h)
-else
-	AC_CHECK_HEADERS(fcntl.h unistd.h)
-	AC_CHECK_HEADERS(sys/ioctl.h sys/mib.h sys/ndd_var.h sys/socket.h sys/sockio.h \
+AC_CHECK_HEADERS(fcntl.h unistd.h)
+AC_CHECK_HEADERS(sys/ioctl.h sys/mib.h sys/ndd_var.h sys/socket.h sys/sockio.h \
 	    sys/sysctl.h sys/time.h)
-	AC_CHECK_HEADERS(net/bpf.h net/if.h net/if_var.h \
+AC_CHECK_HEADERS(net/bpf.h net/if.h net/if_var.h \
 	    net/if_arp.h net/if_dl.h net/pfilt.h \
 	    net/pfvar.h net/radix.h net/raw.h net/route.h netinet/in_var.h \
 	    net/if_tun.h linux/if_tun.h netinet/ip_fw.h linux/ip_fw.h \
 	    linux/ip_fwchains.h linux/netfilter_ipv4/ipchains_core.h)
-	AC_CHECK_HEADERS(ip_fil_compat.h netinet/ip_fil_compat.h ip_compat.h \
+AC_CHECK_HEADERS(ip_fil_compat.h netinet/ip_fil_compat.h ip_compat.h \
 	    netinet/ip_compat.h ip_fil.h netinet/ip_fil.h)
-	AC_CHECK_HEADERS(hpsecurity.h stropts.h)
-fi
+AC_CHECK_HEADERS(hpsecurity.h stropts.h)
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h netdb.h netinet/in.h nlist.h stdlib.h string.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -219,21 +167,17 @@ AC_CHECK_FUNCS([gethostbyname gettimeofday memmove memset pow socket strchr strd
 AC_REPLACE_FUNCS(err strlcat strlcpy strsep)
 
 dnl Checks for other system-specific jonks.
-if test "$CYGWIN" != yes ; then
-	AC_DNET_BSD_BPF
-	AC_DNET_LINUX_PROCFS
-	AC_DNET_LINUX_PF_PACKET
-	AC_DNET_STREAMS_MIB2
-	AC_DNET_STREAMS_ROUTE
-	AC_DNET_IOCTL_ARP
-	AC_DNET_RAWIP_HOST_OFFLEN
-	AC_DNET_RAWIP_COOKED
-fi
+AC_DNET_BSD_BPF
+AC_DNET_LINUX_PROCFS
+AC_DNET_LINUX_PF_PACKET
+AC_DNET_STREAMS_MIB2
+AC_DNET_STREAMS_ROUTE
+AC_DNET_IOCTL_ARP
+AC_DNET_RAWIP_HOST_OFFLEN
+AC_DNET_RAWIP_COOKED
 
 dnl Check for arp interface.
-if test "$ac_cv_header_Iphlpapi_h" = yes ; then
-	AC_LIBOBJ([arp-win32])
-elif test "$ac_cv_dnet_ioctl_arp" = yes ; then
+if test "$ac_cv_dnet_ioctl_arp" = yes ; then
 	AC_LIBOBJ([arp-ioctl])
 elif test "$ac_cv_dnet_route_h_has_rt_msghdr" = yes ; then
 	AC_LIBOBJ([arp-bsd])
@@ -242,9 +186,7 @@ else
 fi
 
 dnl Check for Ethernet interface.
-if test "$ac_cv_header_Iphlpapi_h" = yes ; then
-	AC_LIBOBJ([eth-win32])
-elif test "$ac_cv_header_net_pfilt_h" = yes ; then
+if test "$ac_cv_header_net_pfilt_h" = yes ; then
 	AC_LIBOBJ([eth-pfilt])
 elif test "$ac_cv_dnet_bsd_bpf" = yes ; then
 	AC_LIBOBJ([eth-bsd])
@@ -285,25 +227,17 @@ else
 fi
 
 dnl Check for network interface interface.
-if test "$ac_cv_header_Iphlpapi_h" = yes ; then
-	AC_LIBOBJ([intf-win32])
-else
-	AC_LIBOBJ([intf])
-fi
+AC_LIBOBJ([intf])
 
 dnl Check for raw IP interface.
-if test "$ac_cv_header_Iphlpapi_h" = yes ; then
-	AC_LIBOBJ([ip-win32])
-elif test "$ac_cv_dnet_rawip_cooked" = yes ; then
+if test "$ac_cv_dnet_rawip_cooked" = yes ; then
 	AC_LIBOBJ([ip-cooked])
 else
 	AC_LIBOBJ([ip])
 fi
 
 dnl Check for routing interface.
-if test "$ac_cv_header_Iphlpapi_h" = yes ; then
-	AC_LIBOBJ([route-win32])
-elif test "$ac_cv_dnet_route_h_has_rt_msghdr" = yes ; then
+if test "$ac_cv_dnet_route_h_has_rt_msghdr" = yes ; then
 	AC_LIBOBJ([route-bsd])
 elif test "$ac_cv_dnet_linux_procfs" = yes ; then
 	AC_LIBOBJ([route-linux])
@@ -338,6 +272,5 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
                  test/Makefile
                  test/check/Makefile
-                 test/dnet/Makefile],
-	[chmod 755 dnet-config])
+                 test/dnet/Makefile])
 AC_OUTPUT

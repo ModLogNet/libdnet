@@ -11,17 +11,9 @@
 
 #include "config.h"
 
-#ifdef _WIN32
-/* XXX */
-# undef _WIN32_WINNT
-# define _WIN32_WINNT 0x0400
-# include <wincrypt.h>
-# define inline __inline
-#else
-# include <sys/types.h>
-# include <sys/time.h>
-# include <unistd.h>
-#endif
+#include <sys/types.h>
+#include <sys/time.h>
+#include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
@@ -68,14 +60,6 @@ rand_open(void)
 {
 	rand_t *r;
 	u_char seed[256];
-#ifdef _WIN32
-	HCRYPTPROV hcrypt = 0;
-
-	CryptAcquireContext(&hcrypt, NULL, NULL, PROV_RSA_FULL,
-	    CRYPT_VERIFYCONTEXT);
-	CryptGenRandom(hcrypt, sizeof(seed), seed);
-	CryptReleaseContext(hcrypt, 0);
-#else
 	struct timeval *tv = (struct timeval *)seed;
 	int fd;
 
@@ -85,7 +69,6 @@ rand_open(void)
 		close(fd);
 	}
 	gettimeofday(tv, NULL);
-#endif
 	if ((r = malloc(sizeof(*r))) != NULL) {
 		rand_init(r);
 		rand_addrandom(r, seed, 128);
