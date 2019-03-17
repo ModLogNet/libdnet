@@ -141,7 +141,7 @@ DIST_COMMON = Makefile.am Makefile.in arp-bsd.c arp-ioctl.c arp-none.c \
 	err.c eth-bsd.c eth-none.c \
 	fw-ipf.c fw-ipfw.c fw-none.c fw-pf.c \
 	intf.c ip.c memcmp.c \
-	route-bsd.c route-linux.c route-none.c \
+	route-bsd.c route-none.c \
 	strlcat.c strlcpy.c strsep.c tun-bsd.c \
 	tun-none.c
 SOURCES = $(libdnet_la_SOURCES)

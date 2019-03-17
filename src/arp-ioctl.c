@@ -38,10 +38,6 @@
 
 #include "dnet.h"
 
-#ifdef HAVE_LINUX_PROCFS
-#define PROC_ARP_FILE	"/proc/net/arp"
-#endif
-
 struct arp_handle {
 	int	 fd;
 #ifdef HAVE_ARPREQ_ARP_DEV
@@ -191,41 +187,7 @@ arp_get(arp_t *a, struct arp_entry *entry)
 	return (addr_ston(&ar.arp_ha, &entry->arp_ha));
 }
 
-#ifdef HAVE_LINUX_PROCFS
-int
-arp_loop(arp_t *a, arp_handler callback, void *arg)
-{
-	FILE *fp;
-	struct arp_entry entry;
-	char buf[BUFSIZ], ipbuf[100], macbuf[100], maskbuf[100], devbuf[100];
-	int i, type, flags, ret;
-
-	if ((fp = fopen(PROC_ARP_FILE, "r")) == NULL)
-		return (-1);
-
-	ret = 0;
-	while (fgets(buf, sizeof(buf), fp) != NULL) {
-		i = sscanf(buf, "%s 0x%x 0x%x %100s %100s %100s\n",
-		    ipbuf, &type, &flags, macbuf, maskbuf, devbuf);
-		
-		if (i < 4 || (flags & ATF_COM) == 0)
-			continue;
-		
-		if (addr_aton(ipbuf, &entry.arp_pa) == 0 &&
-		    addr_aton(macbuf, &entry.arp_ha) == 0) {
-			if ((ret = callback(&entry, arg)) != 0)
-				break;
-		}
-	}
-	if (ferror(fp)) {
-		fclose(fp);
-		return (-1);
-	}
-	fclose(fp);
-	
-	return (ret);
-}
-#elif defined (HAVE_STREAMS_MIB2)
+#ifdef HAVE_STREAMS_MIB2
 int
 arp_loop(arp_t *r, arp_handler callback, void *arg)
 {

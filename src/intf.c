@@ -539,30 +539,6 @@ _intf_get_aliases(intf_t *intf, struct intf_entry *entry)
 #endif
 		ap++, entry->intf_alias_num++;
 	}
-#ifdef HAVE_LINUX_PROCFS
-#define PROC_INET6_FILE	"/proc/net/if_inet6"
-	{
-		FILE *f;
-		char buf[256], s[8][5], name[INTF_NAME_LEN];
-		u_int idx, bits, scope, flags;
-		
-		if ((f = fopen(PROC_INET6_FILE, "r")) != NULL) {
-			while ((ap +1) < lap &&
-			       fgets(buf, sizeof(buf), f) != NULL) {
-				sscanf(buf, "%04s%04s%04s%04s%04s%04s%04s%04s %02x %02x %02x %02x %32s\n",
-				    s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7],
-				    &idx, &bits, &scope, &flags, name);
-				if (strcmp(name, entry->intf_name) == 0) {
-					snprintf(buf, sizeof(buf), "%s:%s:%s:%s:%s:%s:%s:%s/%d",
-					    s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], bits);
-					addr_aton(buf, ap);
-					ap++, entry->intf_alias_num++;
-				}
-			}
-			fclose(f);
-		}
-	}
-#endif
 	entry->intf_len = (u_char *)ap - (u_char *)entry;
 	
 	return (0);
@@ -653,61 +629,6 @@ intf_get_dst(intf_t *intf, struct intf_entry *entry, struct addr *dst)
 	return (0);
 }
 
-#ifdef HAVE_LINUX_PROCFS
-#define PROC_DEV_FILE	"/proc/net/dev"
-
-int
-intf_loop(intf_t *intf, intf_handler callback, void *arg)
-{
-	FILE *fp;
-	struct intf_entry *entry;
-	char *p, buf[BUFSIZ], ebuf[BUFSIZ];
-	int ret;
-
-	entry = (struct intf_entry *)ebuf;
-	
-	if ((fp = fopen(PROC_DEV_FILE, "r")) == NULL)
-		return (-1);
-	
-	intf->ifc.ifc_buf = (caddr_t)intf->ifcbuf;
-	intf->ifc.ifc_len = sizeof(intf->ifcbuf);
-	
-	if (ioctl(intf->fd, SIOCGIFCONF, &intf->ifc) < 0) {
-		fclose(fp);
-		return (-1);
-	}
-
-	ret = 0;
-	while (fgets(buf, sizeof(buf), fp) != NULL) {
-		if ((p = strchr(buf, ':')) == NULL)
-			continue;
-		*p = '\0';
-		for (p = buf; *p == ' '; p++)
-			;
-
-		memset(ebuf, 0, sizeof(ebuf));
-		strlcpy(entry->intf_name, p, sizeof(entry->intf_name));
-		entry->intf_len = sizeof(ebuf);
-		
-		if (_intf_get_noalias(intf, entry) < 0) {
-			ret = -1;
-			break;
-		}
-		if (_intf_get_aliases(intf, entry) < 0) {
-			ret = -1;
-			break;
-		}
-		if ((ret = (*callback)(entry, arg)) != 0)
-			break;
-	}
-	if (ferror(fp))
-		ret = -1;
-	
-	fclose(fp);
-	
-	return (ret);
-}
-#else
 int
 intf_loop(intf_t *intf, intf_handler callback, void *arg)
 {
@@ -757,7 +678,6 @@ intf_loop(intf_t *intf, intf_handler callback, void *arg)
 	}
 	return (0);
 }
-#endif /* !HAVE_LINUX_PROCFS */
 
 intf_t *
 intf_close(intf_t *intf)

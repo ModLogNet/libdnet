@@ -206,7 +206,6 @@ AC_REPLACE_FUNCS(err strlcat strlcpy strsep)
 
 dnl Checks for other system-specific jonks.
 AC_DNET_BSD_BPF
-AC_DNET_LINUX_PROCFS
 AC_DNET_STREAMS_MIB2
 AC_DNET_STREAMS_ROUTE
 AC_DNET_IOCTL_ARP
@@ -255,8 +254,6 @@ AC_LIBOBJ([ip])
 dnl Check for routing interface.
 if test "$ac_cv_dnet_route_h_has_rt_msghdr" = yes ; then
 	AC_LIBOBJ([route-bsd])
-elif test "$ac_cv_dnet_linux_procfs" = yes ; then
-	AC_LIBOBJ([route-linux])
 else
 	AC_LIBOBJ([route-none])
 fi
