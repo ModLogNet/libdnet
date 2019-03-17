@@ -115,7 +115,7 @@ AC_CHECK_HEADERS(sys/ioctl.h sys/ndd_var.h sys/socket.h sys/sockio.h \
 	    sys/sysctl.h sys/time.h)
 AC_CHECK_HEADERS(net/if.h)
 AC_CHECK_HEADERS(sys/socket.h)
-AC_CHECK_HEADERS(net/bpf.h net/if_var.h \
+AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_arp.h net/if_dl.h net/pfilt.h \
 	    net/pfvar.h net/radix.h net/raw.h net/route.h netinet/in_var.h \
 	    net/if_tun.h linux/if_tun.h netinet/ip_fw.h linux/ip_fw.h \
@@ -123,6 +123,12 @@ AC_CHECK_HEADERS(net/bpf.h net/if_var.h \
 AC_CHECK_HEADERS(ip_fil_compat.h netinet/ip_fil_compat.h ip_compat.h \
 	    netinet/ip_compat.h ip_fil.h netinet/ip_fil.h)
 AC_CHECK_HEADERS(hpsecurity.h stropts.h)
+AC_CHECK_HEADERS([net/if_var.h], [], [],
+		 [[
+		  #include <sys/types.h>
+		  #include <sys/socket.h>
+		  #include <net/if.h>
+		  ]])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
