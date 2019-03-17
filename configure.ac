@@ -270,7 +270,7 @@ elif test "$ac_cv_header_netinet_ip_fw_h" = yes ; then
      dnl	AC_LIBOBJ([fw-none]) ;;
      dnl *)
 	AC_LIBOBJ([fw-ipfw]) ;;
-     esac
+     dnl esac
 elif test "$ac_cv_header_netinet_ip_fil_h" = yes ; then
 	AC_LIBOBJ([fw-ipf])
 elif test "$ac_cv_header_linux_ip_fw_h" = yes ; then
