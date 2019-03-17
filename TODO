@@ -12,8 +12,6 @@ prefix everything with dnet_*, maybe new API with common dnet_t handle?
 
 more documentation and example code
 
-ip-cooked.c: use RTM_RESOLVE for ip_lookup_mac() (GetBestInterface()?)
-
 add a way to enable ip forwarding?
 
 finish IPv6 support everywhere (fw, route, ip6 etc.)

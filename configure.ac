@@ -156,6 +156,7 @@ AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_tun.h linux/if_tun.h)
 AC_CHECK_HEADERS([netinet/ip_fw.h], [], [],
  		 [[
+ 		  #include <net/if.h>
 		  #include <netinet/in.h>
 		  #include <sys/types.h>
  		  ]])
@@ -196,7 +197,6 @@ AC_DNET_STREAMS_MIB2
 AC_DNET_STREAMS_ROUTE
 AC_DNET_IOCTL_ARP
 AC_DNET_RAWIP_HOST_OFFLEN
-AC_DNET_RAWIP_COOKED
 
 dnl Check for arp interface.
 if test "$ac_cv_dnet_ioctl_arp" = yes ; then
@@ -238,11 +238,7 @@ dnl Check for network interface interface.
 AC_LIBOBJ([intf])
 
 dnl Check for raw IP interface.
-if test "$ac_cv_dnet_rawip_cooked" = yes ; then
-	AC_LIBOBJ([ip-cooked])
-else
-	AC_LIBOBJ([ip])
-fi
+AC_LIBOBJ([ip])
 
 dnl Check for routing interface.
 if test "$ac_cv_dnet_route_h_has_rt_msghdr" = yes ; then

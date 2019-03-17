@@ -102,9 +102,6 @@
 /* Define to 1 if you have the <net/route.h> header file. */
 #undef HAVE_NET_ROUTE_H
 
-/* Define if you have cooked raw IP sockets. */
-#undef HAVE_RAWIP_COOKED
-
 /* Define if raw IP sockets require host byte ordering for ip_off, ip_len. */
 #undef HAVE_RAWIP_HOST_OFFLEN
 
