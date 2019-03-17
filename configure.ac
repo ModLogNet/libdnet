@@ -138,11 +138,10 @@ AC_CHECK_HEADERS([arpa/inet.h \
 		  fcntl.h \
 		  inttypes.h \
 		  netdb.h \
+		  net/if.h \
 		  netinet/icmp6.h \
-		  netinet/if.h \
 		  netinet/in.h \
 		  netinet/ip6.h \
-		  netinet6/in6.h \
 		  nlist.h \
 		  stdlib.h \
 		  string.h \
@@ -161,7 +160,7 @@ AC_CHECK_HEADERS(net/bpf.h \
 AC_CHECK_HEADERS([netinet/ip_compat.h], [], [],
  		 [[
  		  #include <net/if.h>
-		  #include <netinet6/in6.h>
+		  #include <netinet/in.h>
 		  #include <netinet/ip6.h>
 		  #include <netinet/icmp6.h>
  		  ]])
