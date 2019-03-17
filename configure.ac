@@ -162,6 +162,7 @@ AC_CHECK_HEADERS([net/pfvar.h], [], [],
 AC_CHECK_HEADERS([net/route.h], [], [],
  		 [[
  		  #include <sys/socket.h>
+ 		  #include <sys/types.h>
  		  ]])
 AC_CHECK_HEADERS([netinet/in_var.h], [], [],
  		 [[
