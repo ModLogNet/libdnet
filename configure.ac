@@ -143,7 +143,7 @@ AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_tun.h linux/if_tun.h netinet/ip_fw.h linux/ip_fw.h \
 	    linux/ip_fwchains.h linux/netfilter_ipv4/ipchains_core.h)
 AC_CHECK_HEADERS(netinet/ip_compat.h)
-AC_CHECK_HEADERS(hpsecurity.h stropts.h)
+AC_CHECK_HEADERS(stropts.h)
 AC_CHECK_HEADERS([netinet/ip_fil.h], [], [],
 		 [[
 		  #include <net/if.h>
@@ -241,8 +241,6 @@ if test "$ac_cv_dnet_route_h_has_rt_msghdr" = yes ; then
 	AC_LIBOBJ([route-bsd])
 elif test "$ac_cv_dnet_linux_procfs" = yes ; then
 	AC_LIBOBJ([route-linux])
-elif test "$ac_cv_header_hpsecurity_h" = yes ; then
-	AC_LIBOBJ([route-hpux])
 else
 	AC_LIBOBJ([route-none])
 fi

@@ -123,17 +123,6 @@ arp_add(arp_t *a, const struct arp_entry *entry)
 	}
 #endif
 	ar.arp_flags = ATF_PERM | ATF_COM;
-#ifdef hpux
-	/* XXX - screwy extended arpreq struct */
-	{
-		struct sockaddr_in *sin;
-
-		ar.arp_hw_addr_len = ETH_ADDR_LEN;
-		sin = (struct sockaddr_in *)&ar.arp_pa_mask;
-		sin->sin_family = AF_INET;
-		sin->sin_addr.s_addr = IP_ADDR_BROADCAST;
-	}
-#endif
 	if (ioctl(a->fd, SIOCSARP, &ar) < 0)
 		return (-1);
 
