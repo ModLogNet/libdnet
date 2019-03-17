@@ -135,8 +135,7 @@ fi
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h netdb.h netinet/in.h nlist.h stdlib.h string.h sys/ioctl.h sys/param.h sys/socket.h sys/stdint.h sys/time.h unistd.h])
-AC_CHECK_HEADERS(sys/ioctl.h sys/ndd_var.h sys/socket.h sys/sockio.h \
-	    sys/sysctl.h sys/time.h)
+AC_CHECK_HEADERS(sys/ndd_var.h sys/sockio.h sys/sysctl.h)
 AC_CHECK_HEADERS(net/if.h)
 AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_dl.h net/pfilt.h \
@@ -150,7 +149,7 @@ AC_CHECK_HEADERS([net/if_arp.h], [], [],
 		 [[
 		  #include <sys/socket.h>
 		  #include <netinet/in.h>
-		  #include <sys/stdint.h>
+		  #include <sys/types.h>
 		  ]])
 AC_CHECK_HEADERS([net/if_var.h], [], [],
 		 [[
