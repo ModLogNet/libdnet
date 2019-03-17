@@ -139,6 +139,7 @@ AC_CHECK_HEADERS([arpa/inet.h \
 		  inttypes.h \
 		  netdb.h \
 		  net/if.h \
+		  net/if_tun.h \
 		  netinet/in.h \
 		  nlist.h \
 		  stdlib.h \
@@ -152,14 +153,19 @@ AC_CHECK_HEADERS([arpa/inet.h \
 		  sys/time.h])
 AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_dl.h \
-	    net/pfvar.h net/radix.h net/route.h netinet/in_var.h \
-	    net/if_tun.h linux/if_tun.h)
-AC_CHECK_HEADERS([netinet/ip_fw.h], [], [],
+	    net/pfvar.h net/radix.h net/route.h )
+AC_CHECK_HEADERS([netinet/in_var.h], [], [],
  		 [[
  		  #include <net/if.h>
-		  #include <netinet/in.h>
-		  #include <sys/types.h>
+ 		  #include <netinet/in.h>
+ 		  #include <sys/types.h>
  		  ]])
+dnl AC_CHECK_HEADERS([netinet/ip_fw.h], [], [],
+dnl 		 [[
+dnl 		  #include <net/if.h>
+dnl 		  #include <netinet/in.h>
+dnl 		  #include <sys/types.h>
+dnl 		  ]])
 AC_CHECK_HEADERS([netinet/ip_compat.h], [], [],
  		 [[
  		  #include <net/if.h>
@@ -250,9 +256,7 @@ else
 fi
 
 dnl Check for tun interface.
-if test "$ac_cv_header_linux_if_tun_h" = yes ; then
-	AC_LIBOBJ([tun-linux])
-elif test "$ac_cv_header_net_if_tun_h" = yes ; then
+if test "$ac_cv_header_net_if_tun_h" = yes ; then
 	AC_LIBOBJ([tun-bsd])
 elif test -c "/dev/tun0" ; then
 	AC_LIBOBJ([tun-bsd])
