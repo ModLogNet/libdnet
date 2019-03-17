@@ -134,15 +134,35 @@ fi
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h netdb.h netinet/in.h nlist.h stdlib.h string.h sys/ioctl.h sys/param.h sys/socket.h sys/stdint.h sys/time.h unistd.h])
+AC_CHECK_HEADERS([arpa/inet.h \
+		  fcntl.h \
+		  inttypes.h \
+		  netdb.h \
+		  netinet/icmp6.h \
+		  netinet/if.h \
+		  netinet/in.h \
+		  netinet/ip6.h \
+		  nlist.h \
+		  stdlib.h \
+		  string.h \
+		  sys/ioctl.h \
+		  sys/param.h \
+		  sys/socket.h \
+		  sys/stdint.h \
+		  sys/time.h \
+		  unistd.h])
 AC_CHECK_HEADERS(sys/sockio.h sys/sysctl.h)
-AC_CHECK_HEADERS(net/if.h)
 AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_dl.h net/pfilt.h \
 	    net/pfvar.h net/radix.h net/raw.h net/route.h netinet/in_var.h \
 	    net/if_tun.h linux/if_tun.h netinet/ip_fw.h linux/ip_fw.h \
 	    linux/ip_fwchains.h linux/netfilter_ipv4/ipchains_core.h)
-AC_CHECK_HEADERS(netinet/ip_compat.h)
+AC_CHECK_HEADERS([netinet/ip_compat.h], [], [],
+ 		 [[
+ 		  #include <net/if.h>
+		  #include <netinet/ip6.h>
+		  #include <netinet/icmp6.h>
+ 		  ]])
 dnl AC_CHECK_HEADERS([netinet/ip_fil.h], [], [],
 dnl 		 [[
 dnl 		  #include <net/if.h>
