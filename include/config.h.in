@@ -48,9 +48,6 @@
 /* Define to 1 if you have the `ws2_32' library (-lws2_32). */
 #undef HAVE_LIBWS2_32
 
-/* Define if you have Linux PF_PACKET sockets. */
-#undef HAVE_LINUX_PF_PACKET
-
 /* Define if you have the Linux /proc filesystem. */
 #undef HAVE_LINUX_PROCFS
 

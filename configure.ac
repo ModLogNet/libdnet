@@ -138,8 +138,11 @@ AC_CHECK_HEADERS([arpa/inet.h \
 		  fcntl.h \
 		  inttypes.h \
 		  netdb.h \
+		  net/bpf.h \
 		  net/if.h \
+		  net/if_dl.h \
 		  net/if_tun.h \
+		  net/radix.h \
 		  netinet/in.h \
 		  nlist.h \
 		  stdlib.h \
@@ -151,9 +154,15 @@ AC_CHECK_HEADERS([arpa/inet.h \
 		  sys/sysctl.h \
 		  sys/stdint.h \
 		  sys/time.h])
-AC_CHECK_HEADERS(net/bpf.h \
-	    net/if_dl.h \
-	    net/pfvar.h net/radix.h net/route.h )
+AC_CHECK_HEADERS([net/pfvar.h], [], [],
+ 		 [[
+ 		  #include <net/if.h>
+ 		  #include <sys/socket.h>
+ 		  ]])
+AC_CHECK_HEADERS([net/route.h], [], [],
+ 		 [[
+ 		  #include <sys/socket.h>
+ 		  ]])
 AC_CHECK_HEADERS([netinet/in_var.h], [], [],
  		 [[
  		  #include <net/if.h>
@@ -198,7 +207,6 @@ AC_REPLACE_FUNCS(err strlcat strlcpy strsep)
 dnl Checks for other system-specific jonks.
 AC_DNET_BSD_BPF
 AC_DNET_LINUX_PROCFS
-AC_DNET_LINUX_PF_PACKET
 AC_DNET_STREAMS_MIB2
 AC_DNET_STREAMS_ROUTE
 AC_DNET_IOCTL_ARP
@@ -216,8 +224,6 @@ fi
 dnl Check for Ethernet interface.
 if test "$ac_cv_dnet_bsd_bpf" = yes ; then
 	AC_LIBOBJ([eth-bsd])
-elif test "$ac_cv_dnet_linux_pf_packet" = yes ; then
-	AC_LIBOBJ([eth-linux])
 else
 	AC_LIBOBJ([eth-none])
 fi
