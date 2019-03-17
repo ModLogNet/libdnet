@@ -138,7 +138,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 CFLAGS = @CFLAGS@
 DIST_SOURCES = $(libdnet_la_SOURCES)
 DIST_COMMON = Makefile.am Makefile.in arp-bsd.c arp-ioctl.c arp-none.c \
-	arp-win32.c err.c eth-bsd.c eth-dlpi.c eth-linux.c eth-ndd.c \
+	arp-win32.c err.c eth-bsd.c eth-linux.c eth-ndd.c \
 	eth-none.c eth-pfilt.c eth-snoop.c eth-win32.c fw-ipchains.c \
 	fw-ipf.c fw-ipfw.c fw-none.c fw-pf.c fw-pktfilter.c \
 	intf-win32.c intf.c ip-cooked.c ip-win32.c ip.c memcmp.c \

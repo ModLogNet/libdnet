@@ -172,15 +172,6 @@
 /* Define to 1 if you have the `strsep' function. */
 #undef HAVE_STRSEP
 
-/* Define to 1 if you have the <sys/dlpihdr.h> header file. */
-#undef HAVE_SYS_DLPIHDR_H
-
-/* Define to 1 if you have the <sys/dlpi_ext.h> header file. */
-#undef HAVE_SYS_DLPI_EXT_H
-
-/* Define to 1 if you have the <sys/dlpi.h> header file. */
-#undef HAVE_SYS_DLPI_H
-
 /* Define to 1 if you have the <sys/ioctl.h> header file. */
 #undef HAVE_SYS_IOCTL_H
 
