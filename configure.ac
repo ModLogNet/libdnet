@@ -139,9 +139,7 @@ AC_CHECK_HEADERS([arpa/inet.h \
 		  inttypes.h \
 		  netdb.h \
 		  net/if.h \
-dnl 		  netinet/icmp6.h \
 		  netinet/in.h \
-dnl 		  netinet/ip6.h \
 		  nlist.h \
 		  stdlib.h \
 		  string.h \
@@ -155,8 +153,11 @@ dnl 		  netinet/ip6.h \
 AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_dl.h \
 	    net/pfvar.h net/radix.h net/raw.h net/route.h netinet/in_var.h \
-	    net/if_tun.h linux/if_tun.h netinet/ip_fw.h linux/ip_fw.h \
-	    linux/ip_fwchains.h linux/netfilter_ipv4/ipchains_core.h)
+	    net/if_tun.h linux/if_tun.h)
+AC_CHECK_HEADERS([netinet/ip_fw.h], [], [],
+ 		 [[
+		  #include <netinet/in.h>
+ 		  ]])
 AC_CHECK_HEADERS([netinet/ip_compat.h], [], [],
  		 [[
  		  #include <net/if.h>
@@ -230,12 +231,6 @@ elif test "$ac_cv_header_netinet_ip_fw_h" = yes ; then
      dnl esac
 elif test "$ac_cv_header_netinet_ip_fil_h" = yes ; then
 	AC_LIBOBJ([fw-ipf])
-elif test "$ac_cv_header_linux_ip_fw_h" = yes ; then
-	AC_LIBOBJ([fw-ipchains])
-elif test "$ac_cv_header_linux_ip_fwchains_h" = yes ; then
-	AC_LIBOBJ([fw-ipchains])
-elif test "$ac_cv_header_linux_netfilter_ipv4_ipchains_core_h" = yes ; then
-	AC_LIBOBJ([fw-ipchains])
 else
 	AC_LIBOBJ([fw-none])
 fi

@@ -51,16 +51,6 @@
 /* Define to 1 if you have the <linux/if_tun.h> header file. */
 #undef HAVE_LINUX_IF_TUN_H
 
-/* Define to 1 if you have the <linux/ip_fwchains.h> header file. */
-#undef HAVE_LINUX_IP_FWCHAINS_H
-
-/* Define to 1 if you have the <linux/ip_fw.h> header file. */
-#undef HAVE_LINUX_IP_FW_H
-
-/* Define to 1 if you have the <linux/netfilter_ipv4/ipchains_core.h> header
-   file. */
-#undef HAVE_LINUX_NETFILTER_IPV4_IPCHAINS_CORE_H
-
 /* Define if you have Linux PF_PACKET sockets. */
 #undef HAVE_LINUX_PF_PACKET
 
