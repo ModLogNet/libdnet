@@ -172,8 +172,7 @@ if test "$CYGWIN" = yes ; then
 	AC_CHECK_HEADERS(Iphlpapi.h winsock2.h)
 else
 	AC_CHECK_HEADERS(fcntl.h unistd.h)
-	AC_CHECK_HEADERS(sys/dlpihdr.h sys/dlpi_ext.h \
-	    sys/ioctl.h sys/mib.h sys/ndd_var.h sys/socket.h sys/sockio.h \
+	AC_CHECK_HEADERS(sys/ioctl.h sys/mib.h sys/ndd_var.h sys/socket.h sys/sockio.h \
 	    sys/sysctl.h sys/time.h)
 	AC_CHECK_HEADERS(net/bpf.h net/if.h net/if_var.h \
 	    net/if_arp.h net/if_dl.h net/pfilt.h \
@@ -255,9 +254,6 @@ elif test "$ac_cv_header_net_raw_h" = yes ; then
 	AC_LIBOBJ([eth-snoop])
 elif test "$ac_cv_header_sys_ndd_var_h" = yes ; then
 	AC_LIBOBJ([eth-ndd])
-elif test "$ac_cv_header_sys_dlpi_h" = yes || \
-     test "$ac_cv_header_sys_dlpihdr_h" = yes ; then
-	AC_LIBOBJ([eth-dlpi])
 else
 	AC_LIBOBJ([eth-none])
 fi
@@ -269,10 +265,10 @@ elif test "$ac_cv_header_net_pfvar_h" = yes ; then
 	AC_LIBOBJ([fw-pf])
 elif test "$ac_cv_header_netinet_ip_fw_h" = yes ; then
      dnl XXX - ipfw2 support later...
-     case "$host_os" in
-     *freebsd5*)
-	AC_LIBOBJ([fw-none]) ;;
-     *)
+     dnl case "$host_os" in
+     dnl *freebsd5*)
+     dnl	AC_LIBOBJ([fw-none]) ;;
+     dnl *)
 	AC_LIBOBJ([fw-ipfw]) ;;
      esac
 elif test "$ac_cv_header_netinet_ip_fil_h" = yes ; then
