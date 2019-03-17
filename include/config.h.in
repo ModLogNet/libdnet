@@ -103,9 +103,6 @@
 /* Define to 1 if you have the <net/if_var.h> header file. */
 #undef HAVE_NET_IF_VAR_H
 
-/* Define to 1 if you have the <net/pfilt.h> header file. */
-#undef HAVE_NET_PFILT_H
-
 /* Define to 1 if you have the <net/pfvar.h> header file. */
 #undef HAVE_NET_PFVAR_H
 

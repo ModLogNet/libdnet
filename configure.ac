@@ -139,9 +139,9 @@ AC_CHECK_HEADERS([arpa/inet.h \
 		  inttypes.h \
 		  netdb.h \
 		  net/if.h \
-		  netinet/icmp6.h \
+dnl 		  netinet/icmp6.h \
 		  netinet/in.h \
-		  netinet/ip6.h \
+dnl 		  netinet/ip6.h \
 		  nlist.h \
 		  stdlib.h \
 		  string.h \
@@ -153,7 +153,7 @@ AC_CHECK_HEADERS([arpa/inet.h \
 		  sys/stdint.h \
 		  sys/time.h])
 AC_CHECK_HEADERS(net/bpf.h \
-	    net/if_dl.h net/pfilt.h \
+	    net/if_dl.h \
 	    net/pfvar.h net/radix.h net/raw.h net/route.h netinet/in_var.h \
 	    net/if_tun.h linux/if_tun.h netinet/ip_fw.h linux/ip_fw.h \
 	    linux/ip_fwchains.h linux/netfilter_ipv4/ipchains_core.h)
@@ -206,9 +206,7 @@ else
 fi
 
 dnl Check for Ethernet interface.
-if test "$ac_cv_header_net_pfilt_h" = yes ; then
-	AC_LIBOBJ([eth-pfilt])
-elif test "$ac_cv_dnet_bsd_bpf" = yes ; then
+if test "$ac_cv_dnet_bsd_bpf" = yes ; then
 	AC_LIBOBJ([eth-bsd])
 elif test "$ac_cv_dnet_linux_pf_packet" = yes ; then
 	AC_LIBOBJ([eth-linux])
