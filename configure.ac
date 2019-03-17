@@ -144,10 +144,10 @@ AC_CHECK_HEADERS(net/bpf.h \
 	    linux/ip_fwchains.h linux/netfilter_ipv4/ipchains_core.h)
 AC_CHECK_HEADERS(netinet/ip_compat.h)
 AC_CHECK_HEADERS(stropts.h)
-AC_CHECK_HEADERS([netinet/ip_fil.h], [], [],
-		 [[
-		  #include <net/if.h>
-		  ]])
+dnl AC_CHECK_HEADERS([netinet/ip_fil.h], [], [],
+dnl 		 [[
+dnl 		  #include <net/if.h>
+dnl 		  ]])
 AC_CHECK_HEADERS([net/if_arp.h], [], [],
 		 [[
 		  #include <sys/socket.h>
