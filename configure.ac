@@ -172,7 +172,7 @@ if test "$CYGWIN" = yes ; then
 	AC_CHECK_HEADERS(Iphlpapi.h winsock2.h)
 else
 	AC_CHECK_HEADERS(fcntl.h unistd.h)
-	AC_CHECK_HEADERS(sys/bufmod.h sys/dlpi.h sys/dlpihdr.h sys/dlpi_ext.h \
+	AC_CHECK_HEADERS(sys/dlpihdr.h sys/dlpi_ext.h \
 	    sys/ioctl.h sys/mib.h sys/ndd_var.h sys/socket.h sys/sockio.h \
 	    sys/sysctl.h sys/time.h)
 	AC_CHECK_HEADERS(net/bpf.h net/if.h net/if_var.h \

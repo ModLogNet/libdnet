@@ -172,9 +172,6 @@
 /* Define to 1 if you have the `strsep' function. */
 #undef HAVE_STRSEP
 
-/* Define to 1 if you have the <sys/bufmod.h> header file. */
-#undef HAVE_SYS_BUFMOD_H
-
 /* Define to 1 if you have the <sys/dlpihdr.h> header file. */
 #undef HAVE_SYS_DLPIHDR_H
 
