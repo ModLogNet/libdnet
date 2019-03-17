@@ -99,9 +99,6 @@
 /* Define to 1 if you have the <net/radix.h> header file. */
 #undef HAVE_NET_RADIX_H
 
-/* Define to 1 if you have the <net/raw.h> header file. */
-#undef HAVE_NET_RAW_H
-
 /* Define to 1 if you have the <net/route.h> header file. */
 #undef HAVE_NET_ROUTE_H
 

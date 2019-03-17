@@ -152,11 +152,12 @@ AC_CHECK_HEADERS([arpa/inet.h \
 		  sys/time.h])
 AC_CHECK_HEADERS(net/bpf.h \
 	    net/if_dl.h \
-	    net/pfvar.h net/radix.h net/raw.h net/route.h netinet/in_var.h \
+	    net/pfvar.h net/radix.h net/route.h netinet/in_var.h \
 	    net/if_tun.h linux/if_tun.h)
 AC_CHECK_HEADERS([netinet/ip_fw.h], [], [],
  		 [[
 		  #include <netinet/in.h>
+		  #include <sys/types.h>
  		  ]])
 AC_CHECK_HEADERS([netinet/ip_compat.h], [], [],
  		 [[
@@ -211,8 +212,6 @@ if test "$ac_cv_dnet_bsd_bpf" = yes ; then
 	AC_LIBOBJ([eth-bsd])
 elif test "$ac_cv_dnet_linux_pf_packet" = yes ; then
 	AC_LIBOBJ([eth-linux])
-elif test "$ac_cv_header_net_raw_h" = yes ; then
-	AC_LIBOBJ([eth-snoop])
 else
 	AC_LIBOBJ([eth-none])
 fi

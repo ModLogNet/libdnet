@@ -18,9 +18,6 @@
 #ifdef HAVE_NET_IF_DL_H
 # include <net/if_dl.h>
 #endif
-#ifdef HAVE_NET_RAW_H
-# include <net/raw.h>
-#endif
 
 #include <ctype.h>
 #include <errno.h>
