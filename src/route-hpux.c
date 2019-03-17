@@ -10,7 +10,6 @@
 
 #include <sys/types.h>
 #include <sys/ioctl.h>
-#include <sys/mib.h>
 #include <sys/socket.h>
 
 #include <net/route.h>

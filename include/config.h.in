@@ -175,9 +175,6 @@
 /* Define to 1 if you have the <sys/ioctl.h> header file. */
 #undef HAVE_SYS_IOCTL_H
 
-/* Define to 1 if you have the <sys/mib.h> header file. */
-#undef HAVE_SYS_MIB_H
-
 /* Define to 1 if you have the <sys/ndd_var.h> header file. */
 #undef HAVE_SYS_NDD_VAR_H
 

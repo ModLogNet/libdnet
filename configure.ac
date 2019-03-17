@@ -110,9 +110,12 @@ AM_CONDITIONAL(HAVE_CHECK, test "x$CHECKLIB" != "x")
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h unistd.h)
-AC_CHECK_HEADERS(sys/ioctl.h sys/mib.h sys/ndd_var.h sys/socket.h sys/sockio.h \
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h netdb.h netinet/in.h nlist.h stdlib.h string.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h])
+AC_CHECK_HEADERS(sys/ioctl.h sys/ndd_var.h sys/socket.h sys/sockio.h \
 	    sys/sysctl.h sys/time.h)
-AC_CHECK_HEADERS(net/bpf.h net/if.h net/if_var.h \
+AC_CHECK_HEADERS(net/if.h)
+AC_CHECK_HEADERS(sys/socket.h)
+AC_CHECK_HEADERS(net/bpf.h net/if_var.h \
 	    net/if_arp.h net/if_dl.h net/pfilt.h \
 	    net/pfvar.h net/radix.h net/raw.h net/route.h netinet/in_var.h \
 	    net/if_tun.h linux/if_tun.h netinet/ip_fw.h linux/ip_fw.h \
@@ -120,7 +123,6 @@ AC_CHECK_HEADERS(net/bpf.h net/if.h net/if_var.h \
 AC_CHECK_HEADERS(ip_fil_compat.h netinet/ip_fil_compat.h ip_compat.h \
 	    netinet/ip_compat.h ip_fil.h netinet/ip_fil.h)
 AC_CHECK_HEADERS(hpsecurity.h stropts.h)
-AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h netdb.h netinet/in.h nlist.h stdlib.h string.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

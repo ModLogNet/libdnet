@@ -21,8 +21,6 @@
 # include <inet/mib2.h>
 # include <inet/ip.h>
 # undef IP_ADDR_LEN
-#elif defined(HAVE_SYS_MIB_H)
-# include <sys/mib.h>
 #endif
 
 #include <net/if.h>
