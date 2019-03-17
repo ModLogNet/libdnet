@@ -213,9 +213,9 @@ if test "$GCC" = yes ; then
 fi
 
 # Checks for library functions.
-AC_FUNC_MALLOC
+dnl AC_FUNC_MALLOC
 AC_FUNC_MEMCMP
-AC_FUNC_REALLOC
+dnl AC_FUNC_REALLOC
 AC_CHECK_FUNCS([gethostbyname gettimeofday memmove memset pow socket strchr strdup strerror strncasecmp strpbrk strstr strtol strtoul])
 AC_REPLACE_FUNCS(err strlcat strlcpy strsep)
 
