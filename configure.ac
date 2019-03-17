@@ -107,31 +107,6 @@ AM_CONDITIONAL(HAVE_CHECK, test "x$CHECKLIB" != "x")
 
 # Checks for libraries.
 
-# Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
-AC_C_INLINE
-AC_DNET_SOCKADDR_IN6
-AC_TYPE_OFF_T
-AC_TYPE_PID_T
-AC_TYPE_SIZE_T
-AC_TYPE_SSIZE_T
-AC_TYPE_UINT16_T
-AC_TYPE_UINT32_T
-AC_TYPE_UINT64_T
-AC_TYPE_UINT8_T
-if test "$ac_cv_header_sys_socket_h" = yes ; then
-	AC_DNET_SOCKADDR_SA_LEN
-fi
-if test "$ac_cv_header_net_if_arp_h" = yes ; then
-	AC_DNET_ARPREQ_ARP_DEV
-fi
-if test "$ac_cv_header_net_route_h" = yes ; then
-	AC_DNET_ROUTE_RT_MSGHDR
-fi
-if test "$GCC" = yes ; then
-   	CFLAGS="$CFLAGS -Wall"
-fi
-
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h \
@@ -199,6 +174,31 @@ AC_CHECK_HEADERS([net/if_var.h], [], [],
 		  #include <sys/socket.h>
 		  #include <net/if.h>
 		  ]])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_DNET_SOCKADDR_IN6
+AC_TYPE_OFF_T
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
+AC_TYPE_UINT16_T
+AC_TYPE_UINT32_T
+AC_TYPE_UINT64_T
+AC_TYPE_UINT8_T
+if test "$ac_cv_header_sys_socket_h" = yes ; then
+	AC_DNET_SOCKADDR_SA_LEN
+fi
+if test "$ac_cv_header_net_if_arp_h" = yes ; then
+	AC_DNET_ARPREQ_ARP_DEV
+fi
+if test "$ac_cv_header_net_route_h" = yes ; then
+	AC_DNET_ROUTE_RT_MSGHDR
+fi
+if test "$GCC" = yes ; then
+   	CFLAGS="$CFLAGS -Wall"
+fi
 
 # Checks for library functions.
 AC_FUNC_MEMCMP
