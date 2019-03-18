@@ -215,9 +215,15 @@ fi
 
 dnl Check for Ethernet interface.
 if test "$ac_cv_dnet_bsd_bpf" = yes ; then
-	AC_LIBOBJ([eth-bsd])
+	AC_LIBOBJ([eth])
 else
-	AC_LIBOBJ([eth-none])
+	echo "|------------------------------------------|"
+	echo "|No suitable Ethernet interface found. Most|"
+	echo "|probably you are not running the FreeBSD  |"
+	echo "|OS. Please consider using this version    |"
+	echo "|of libdnet  with the FreeBSD system       |"
+	echo "|------------------------------------------|"
+	(exit 1); exit 1;
 fi
 
 dnl Check for firewall interface.
