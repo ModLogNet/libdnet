@@ -14,10 +14,6 @@
 #ifdef HAVE_SYS_SYSCTL_H
 #include <sys/sysctl.h>
 #endif
-#ifdef HAVE_STREAMS_ROUTE
-#include <sys/stream.h>
-#include <sys/ioctl.h>
-#endif
 
 #include <net/if.h>
 #include <net/if_dl.h>
@@ -51,11 +47,7 @@ arp_open(void)
 	arp_t *arp;
 
 	if ((arp = calloc(1, sizeof(*arp))) != NULL) {
-#ifdef HAVE_STREAMS_ROUTE
-		if ((arp->fd = open("/dev/route", O_RDWR, 0)) < 0)
-#else
 		if ((arp->fd = socket(PF_ROUTE, SOCK_RAW, 0)) < 0)
-#endif
 			return (arp_close(arp));
 	}
 	return (arp);
@@ -72,9 +64,6 @@ arp_msg(arp_t *arp, struct arpmsg *msg)
 	msg->rtm.rtm_seq = ++arp->seq; 
 	memcpy(&smsg, msg, sizeof(smsg));
 	
-#ifdef HAVE_STREAMS_ROUTE
-	return (ioctl(arp->fd, RTSTR_SEND, &msg->rtm));
-#else
 	if (write(arp->fd, &smsg, smsg.rtm.rtm_msglen) < 0) {
 		if (errno != ESRCH || msg->rtm.rtm_type != RTM_DELETE)
 			return (-1);
@@ -103,7 +92,6 @@ arp_msg(arp_t *arp, struct arpmsg *msg)
 		return (-1);
 	
 	return (0);
-#endif
 }
 
 int

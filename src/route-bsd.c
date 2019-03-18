@@ -24,9 +24,6 @@
 #include <inet/ip.h>
 #undef IP_ADDR_LEN
 #include <sys/ioctl.h>
-#elif defined(HAVE_STREAMS_ROUTE)
-#include <sys/stream.h>
-#include <sys/ioctl.h>
 #endif
 
 #define route_t	oroute_t	/* XXX - unixware */
@@ -118,10 +115,6 @@ route_msg(route_t *r, int type, struct addr *dst, struct addr *gw)
 #ifdef DEBUG
 	route_msg_print(rtm);
 #endif
-#ifdef HAVE_STREAMS_ROUTE
-	if (ioctl(r->fd, RTSTR_SEND, rtm) < 0)
-		return (-1);
-#else
 	if (write(r->fd, buf, rtm->rtm_msglen) < 0)
 		return (-1);
 
@@ -140,7 +133,6 @@ route_msg(route_t *r, int type, struct addr *dst, struct addr *gw)
 			break;
 		}
 	}
-#endif
 	if (type == RTM_GET && (rtm->rtm_addrs & (RTA_DST|RTA_GATEWAY)) ==
 	    (RTA_DST|RTA_GATEWAY)) {
 		sa = (struct sockaddr *)(rtm + 1);
@@ -165,11 +157,7 @@ route_open(void)
 		if ((r->ip_fd = open(IP_DEV_NAME, O_RDWR)) < 0)
 			return (route_close(r));
 #endif
-#ifdef HAVE_STREAMS_ROUTE
-		if ((r->fd = open("/dev/route", O_RDWR, 0)) < 0)
-#else
 		if ((r->fd = socket(PF_ROUTE, SOCK_RAW, AF_INET)) < 0)
-#endif
 			return (route_close(r));
 	}
 	return (r);
@@ -213,7 +201,7 @@ route_get(route_t *r, struct route_entry *entry)
 	return (0);
 }
 
-#if defined(HAVE_SYS_SYSCTL_H) || defined(HAVE_STREAMS_ROUTE)
+#if defined(HAVE_SYS_SYSCTL_H)
 int
 route_loop(route_t *r, route_handler callback, void *arg)
 {
@@ -222,7 +210,6 @@ route_loop(route_t *r, route_handler callback, void *arg)
 	struct sockaddr *sa;
 	char *buf, *lim, *next;
 	int ret;
-#ifdef HAVE_SYS_SYSCTL_H
 	int mib[6] = { CTL_NET, PF_ROUTE, 0, 0 /* XXX */, NET_RT_DUMP, 0 };
 	size_t len;
 	
@@ -241,31 +228,6 @@ route_loop(route_t *r, route_handler callback, void *arg)
 	}
 	lim = buf + len;
 	next = buf;
-#else /* HAVE_STREAMS_ROUTE */
-	struct rt_giarg giarg, *gp;
-
-	memset(&giarg, 0, sizeof(giarg));
-	giarg.gi_op = KINFO_RT_DUMP;
-
-	if (ioctl(r->fd, RTSTR_GETROUTE, &giarg) < 0)
-		return (-1);
-
-	if ((buf = malloc(giarg.gi_size)) == NULL)
-		return (-1);
-
-	gp = (struct rt_giarg *)buf;
-	gp->gi_size = giarg.gi_size;
-	gp->gi_op = KINFO_RT_DUMP;
-	gp->gi_where = buf;
-	gp->gi_arg = RTF_UP | RTF_GATEWAY;
-
-	if (ioctl(r->fd, RTSTR_GETROUTE, buf) < 0) {
-		free(buf);
-		return (-1);
-	}
-	lim = buf + gp->gi_size;
-	next = buf + sizeof(giarg);
-#endif
 	for (ret = 0; next < lim; next += rtm->rtm_msglen) {
 		rtm = (struct rt_msghdr *)next;
 		sa = (struct sockaddr *)(rtm + 1);

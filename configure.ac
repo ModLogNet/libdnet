@@ -205,7 +205,6 @@ AC_REPLACE_FUNCS(err strlcat strlcpy strsep)
 dnl Checks for other system-specific jonks.
 AC_DNET_BSD_BPF
 AC_DNET_STREAMS_MIB2
-AC_DNET_STREAMS_ROUTE
 AC_DNET_RAWIP_HOST_OFFLEN
 
 dnl Check for arp interface.
