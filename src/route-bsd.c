@@ -15,16 +15,6 @@
 #ifdef HAVE_SYS_SYSCTL_H
 #include <sys/sysctl.h>
 #endif
-#ifdef HAVE_STREAMS_MIB2
-#include <sys/stream.h>
-#include <sys/tihdr.h>
-#include <sys/tiuser.h>
-#include <inet/common.h>
-#include <inet/mib2.h>
-#include <inet/ip.h>
-#undef IP_ADDR_LEN
-#include <sys/ioctl.h>
-#endif
 
 #define route_t	oroute_t	/* XXX - unixware */
 #include <net/route.h>
@@ -54,9 +44,6 @@
 struct route_handle {
 	int	fd;
 	int	seq;
-#ifdef HAVE_STREAMS_MIB2
-	int	ip_fd;
-#endif
 };
 
 #ifdef DEBUG
@@ -153,10 +140,6 @@ route_open(void)
 	
 	if ((r = calloc(1, sizeof(*r))) != NULL) {
 		r->fd = -1;
-#ifdef HAVE_STREAMS_MIB2
-		if ((r->ip_fd = open(IP_DEV_NAME, O_RDWR)) < 0)
-			return (route_close(r));
-#endif
 		if ((r->fd = socket(PF_ROUTE, SOCK_RAW, AF_INET)) < 0)
 			return (route_close(r));
 	}
@@ -258,117 +241,6 @@ route_loop(route_t *r, route_handler callback, void *arg)
 	
 	return (ret);
 }
-#elif defined(HAVE_STREAMS_MIB2)
-
-#ifdef IRE_DEFAULT		/* This means Solaris 5.6 */
-/* I'm not sure if they are compatible, though -- masaki */
-#define IRE_ROUTE IRE_CACHE
-#define IRE_ROUTE_REDIRECT IRE_HOST_REDIRECT
-#endif /* IRE_DEFAULT */
-
-int
-route_loop(route_t *r, route_handler callback, void *arg)
-{
-	struct route_entry entry;
-	struct sockaddr_in sin;
-	struct strbuf msg;
-	struct T_optmgmt_req *tor;
-	struct T_optmgmt_ack *toa;
-	struct T_error_ack *tea;
-	struct opthdr *opt;
-	mib2_ipRouteEntry_t *rt, *rtend;
-	u_char buf[8192];
-	int flags, rc, rtable, ret;
-
-	tor = (struct T_optmgmt_req *)buf;
-	toa = (struct T_optmgmt_ack *)buf;
-	tea = (struct T_error_ack *)buf;
-
-	tor->PRIM_type = T_OPTMGMT_REQ;
-	tor->OPT_offset = sizeof(*tor);
-	tor->OPT_length = sizeof(*opt);
-	tor->MGMT_flags = T_CURRENT;
-	
-	opt = (struct opthdr *)(tor + 1);
-	opt->level = MIB2_IP;
-	opt->name = opt->len = 0;
-	
-	msg.maxlen = sizeof(buf);
-	msg.len = sizeof(*tor) + sizeof(*opt);
-	msg.buf = buf;
-	
-	if (putmsg(r->ip_fd, &msg, NULL, 0) < 0)
-		return (-1);
-	
-	opt = (struct opthdr *)(toa + 1);
-	msg.maxlen = sizeof(buf);
-	
-	for (;;) {
-		flags = 0;
-		if ((rc = getmsg(r->ip_fd, &msg, NULL, &flags)) < 0)
-			return (-1);
-
-		/* See if we're finished. */
-		if (rc == 0 &&
-		    msg.len >= sizeof(*toa) &&
-		    toa->PRIM_type == T_OPTMGMT_ACK &&
-		    toa->MGMT_flags == T_SUCCESS && opt->len == 0)
-			break;
-
-		if (msg.len >= sizeof(*tea) && tea->PRIM_type == T_ERROR_ACK)
-			return (-1);
-		
-		if (rc != MOREDATA || msg.len < (int)sizeof(*toa) ||
-		    toa->PRIM_type != T_OPTMGMT_ACK ||
-		    toa->MGMT_flags != T_SUCCESS)
-			return (-1);
-		
-		rtable = (opt->level == MIB2_IP && opt->name == MIB2_IP_21);
-		
-		msg.maxlen = sizeof(buf) - (sizeof(buf) % sizeof(*rt));
-		msg.len = 0;
-		flags = 0;
-		
-		do {
-			rc = getmsg(r->ip_fd, NULL, &msg, &flags);
-			
-			if (rc != 0 && rc != MOREDATA)
-				return (-1);
-			
-			if (!rtable)
-				continue;
-			
-			rt = (mib2_ipRouteEntry_t *)msg.buf;
-			rtend = (mib2_ipRouteEntry_t *)(msg.buf + msg.len);
-
-			sin.sin_family = AF_INET;
-
-			for ( ; rt < rtend; rt++) {
-				if ((rt->ipRouteInfo.re_ire_type &
-				    (IRE_BROADCAST|IRE_ROUTE_REDIRECT|
-					IRE_LOCAL|IRE_ROUTE)) != 0 ||
-				    rt->ipRouteNextHop == IP_ADDR_ANY)
-					continue;
-				
-				sin.sin_addr.s_addr = rt->ipRouteNextHop;
-				addr_ston((struct sockaddr *)&sin,
-				    &entry.route_gw);
-				
-				sin.sin_addr.s_addr = rt->ipRouteDest;
-				addr_ston((struct sockaddr *)&sin,
-				    &entry.route_dst);
-				
-				sin.sin_addr.s_addr = rt->ipRouteMask;
-				addr_stob((struct sockaddr *)&sin,
-				    &entry.route_dst.addr_bits);
-				
-				if ((ret = callback(&entry, arg)) != 0)
-					return (ret);
-			}
-		} while (rc == MOREDATA);
-	}
-	return (0);
-}
 #elif defined(HAVE_NET_RADIX_H)
 /* XXX - Tru64, others? */
 #include <nlist.h>
@@ -458,10 +330,6 @@ route_t *
 route_close(route_t *r)
 {
 	if (r != NULL) {
-#ifdef HAVE_STREAMS_MIB2
-		if (r->ip_fd >= 0)
-			close(r->ip_fd);
-#endif
 		if (r->fd >= 0)
 			close(r->fd);
 		free(r);

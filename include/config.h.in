@@ -105,9 +105,6 @@
 /* Define to 1 if you have the <stdlib.h> header file. */
 #undef HAVE_STDLIB_H
 
-/* Define if you have SNMP MIB2 STREAMS. */
-#undef HAVE_STREAMS_MIB2
-
 /* Define to 1 if you have the <strings.h> header file. */
 #undef HAVE_STRINGS_H
 
