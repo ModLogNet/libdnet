@@ -208,9 +208,15 @@ AC_DNET_RAWIP_HOST_OFFLEN
 
 dnl Check for arp interface.
 if test "$ac_cv_dnet_route_h_has_rt_msghdr" = yes ; then
-	AC_LIBOBJ([arp-bsd])
+	AC_LIBOBJ([arp])
 else
-	AC_LIBOBJ([arp-none])
+	echo "|----------------------------------------|"
+	echo "|No suitable ARP interface found. Most   |"
+	echo "|probably you are not running the FreeBSD|"
+	echo "|OS. Please consider using this version  |"
+	echo "|of libdnet  with the FreeBSD system     |"
+	echo "|----------------------------------------|"
+	(exit 1); exit 1;
 fi
 
 dnl Check for Ethernet interface.
