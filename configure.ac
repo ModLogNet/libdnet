@@ -190,9 +190,6 @@ AC_TYPE_UINT8_T
 if test "$ac_cv_header_sys_socket_h" = yes ; then
 	AC_DNET_SOCKADDR_SA_LEN
 fi
-if test "$ac_cv_header_net_if_arp_h" = yes ; then
-	AC_DNET_ARPREQ_ARP_DEV
-fi
 if test "$ac_cv_header_net_route_h" = yes ; then
 	AC_DNET_ROUTE_RT_MSGHDR
 fi

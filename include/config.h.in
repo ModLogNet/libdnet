@@ -1,8 +1,5 @@
 /* include/config.h.in.  Generated from configure.in by autoheader.  */
 
-/* Define if arpreq struct has arp_dev. */
-#undef HAVE_ARPREQ_ARP_DEV
-
 /* Define if you have the Berkeley Packet Filter. */
 #undef HAVE_BSD_BPF
 

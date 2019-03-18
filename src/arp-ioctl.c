@@ -40,9 +40,6 @@
 
 struct arp_handle {
 	int	 fd;
-#ifdef HAVE_ARPREQ_ARP_DEV
-	intf_t	*intf;
-#endif
 };
 
 arp_t *
@@ -59,37 +56,9 @@ arp_open(void)
 		if ((a->fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
 #endif
 			return (arp_close(a));
-#ifdef HAVE_ARPREQ_ARP_DEV
-		if ((a->intf = intf_open()) == NULL)
-			return (arp_close(a));
-#endif
 	}
 	return (a);
 }
-
-#ifdef HAVE_ARPREQ_ARP_DEV
-static int
-_arp_set_dev(const struct intf_entry *entry, void *arg)
-{
-	struct arpreq *ar = (struct arpreq *)arg;
-	struct addr dst;
-	uint32_t mask;
-
-	if (entry->intf_type == INTF_TYPE_ETH &&
-	    entry->intf_addr.addr_type == ADDR_TYPE_IP) {
-		addr_btom(entry->intf_addr.addr_bits, &mask, IP_ADDR_LEN);
-		addr_ston((struct sockaddr *)&ar->arp_pa, &dst);
-	
-		if ((entry->intf_addr.addr_ip & mask) ==
-		    (dst.addr_ip & mask)) {
-			strlcpy(ar->arp_dev, entry->intf_name,
-			    sizeof(ar->arp_dev));
-			return (1);
-		}
-	}
-	return (0);
-}
-#endif
 
 int
 arp_add(arp_t *a, const struct arp_entry *entry)
@@ -112,12 +81,6 @@ arp_add(arp_t *a, const struct arp_entry *entry)
 	memcpy(ar.arp_ha.sa_data, &entry->arp_ha.addr_eth, ETH_ADDR_LEN);
 #endif
 
-#ifdef HAVE_ARPREQ_ARP_DEV
-	if (intf_loop(a->intf, _arp_set_dev, &ar) != 1) {
-		errno = ESRCH;
-		return (-1);
-	}
-#endif
 	ar.arp_flags = ATF_PERM | ATF_COM;
 	if (ioctl(a->fd, SIOCSARP, &ar) < 0)
 		return (-1);
@@ -171,12 +134,6 @@ arp_get(arp_t *a, struct arp_entry *entry)
 	if (addr_ntos(&entry->arp_pa, &ar.arp_pa) < 0)
 		return (-1);
 	
-#ifdef HAVE_ARPREQ_ARP_DEV
-	if (intf_loop(a->intf, _arp_set_dev, &ar) != 1) {
-		errno = ESRCH;
-		return (-1);
-	}
-#endif
 	if (ioctl(a->fd, SIOCGARP, &ar) < 0)
 		return (-1);
 
@@ -425,10 +382,6 @@ arp_close(arp_t *a)
 	if (a != NULL) {
 		if (a->fd >= 0)
 			close(a->fd);
-#ifdef HAVE_ARPREQ_ARP_DEV
-		if (a->intf != NULL)
-			intf_close(a->intf);
-#endif
 		free(a);
 	}
 	return (NULL);
