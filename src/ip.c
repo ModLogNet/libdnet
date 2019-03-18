@@ -26,7 +26,7 @@ ip_t *
 ip_open(void)
 {
 	ip_t *i;
-	int n, len;
+        socklen_t n, len;
 
 	if ((i = calloc(1, sizeof(*i))) == NULL)
 		return (NULL);
