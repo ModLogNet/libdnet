@@ -228,7 +228,13 @@ elif test "$ac_cv_header_netinet_ip_fw_h" = yes ; then
 elif test "$ac_cv_header_netinet_ip_fil_h" = yes ; then
 	AC_LIBOBJ([fw-ipf])
 else
-	AC_LIBOBJ([fw-none])
+	echo "|------------------------------------------|"
+	echo "|No suitable firewall interface found. Most|"
+	echo "|probably you are not running the FreeBSD  |"
+	echo "|OS. Please consider using this version    |"
+	echo "|of libdnet  with the FreeBSD system       |"
+	echo "|------------------------------------------|"
+	(exit 1); exit 1;
 fi
 
 dnl Check for network interface interface.
