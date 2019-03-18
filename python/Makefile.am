@@ -8,7 +8,7 @@ if PYTHON
 noinst_SCRIPTS = python-build
 
 $(srcdir)/dnet.c: $(srcdir)/dnet.pyx
-	pyrexc $(srcdir)/dnet.pyx
+	%%CYTHON%% $(srcdir)/dnet.pyx
 
 python-build: $(srcdir)/dnet.c
 	$(PYTHON) setup.py build
