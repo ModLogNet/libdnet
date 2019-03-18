@@ -225,13 +225,6 @@ if test "$ac_cv_header_net_pfvar_h" = yes ; then
 	AC_LIBOBJ([fw-pf])
 elif test "$ac_cv_header_netinet_ip_fw_h" = yes ; then
 	AC_LIBOBJ([fw-ipfw])
-     dnl XXX - ipfw2 support later...
-     dnl case "$host_os" in
-     dnl *freebsd5*)
-     dnl	AC_LIBOBJ([fw-none]) ;;
-     dnl *)
-     dnl 	AC_LIBOBJ([fw-ipfw]) ;;
-     dnl esac
 elif test "$ac_cv_header_netinet_ip_fil_h" = yes ; then
 	AC_LIBOBJ([fw-ipf])
 else
