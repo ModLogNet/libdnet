@@ -15,9 +15,6 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define if you have arp(7) ioctls. */
-#undef HAVE_IOCTL_ARP
-
 /* Define to 1 if you have the <ip_compat.h> header file. */
 #undef HAVE_IP_COMPAT_H
 

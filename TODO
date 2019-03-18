@@ -54,7 +54,7 @@ aix     |      |  5  |  -  |  - |  - |      |   6   |  -  |
 			6 = route_loop doesn't work
 			7 = IP Filter should work, but untested
 
-arp-{bsd,ioctl} both b0rked on unixware
+arp-bsd both b0rked on unixware
 
 eth_send() doesn't allow src mac spoofing on MacOS X (no
 BIOCSHDRCMPLT) without patch (http://slagheap.net/etherspoof/),

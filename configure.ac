@@ -206,13 +206,10 @@ dnl Checks for other system-specific jonks.
 AC_DNET_BSD_BPF
 AC_DNET_STREAMS_MIB2
 AC_DNET_STREAMS_ROUTE
-AC_DNET_IOCTL_ARP
 AC_DNET_RAWIP_HOST_OFFLEN
 
 dnl Check for arp interface.
-if test "$ac_cv_dnet_ioctl_arp" = yes ; then
-	AC_LIBOBJ([arp-ioctl])
-elif test "$ac_cv_dnet_route_h_has_rt_msghdr" = yes ; then
+if test "$ac_cv_dnet_route_h_has_rt_msghdr" = yes ; then
 	AC_LIBOBJ([arp-bsd])
 else
 	AC_LIBOBJ([arp-none])
