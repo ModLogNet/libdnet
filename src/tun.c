@@ -1,5 +1,5 @@
 /*
- * tun-bsd.c
+ * tun.c
  *
  * Copyright (c) 2001 Dug Song <dugsong@monkey.org>
  *

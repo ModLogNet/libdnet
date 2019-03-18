@@ -246,11 +246,17 @@ fi
 
 dnl Check for tun interface.
 if test "$ac_cv_header_net_if_tun_h" = yes ; then
-	AC_LIBOBJ([tun-bsd])
+	AC_LIBOBJ([tun])
 elif test -c "/dev/tun0" ; then
-	AC_LIBOBJ([tun-bsd])
+	AC_LIBOBJ([tun])
 else
-	AC_LIBOBJ([tun-none])
+	echo "|----------------------------------------|"
+	echo "|No suitable tun interface found. Most   |"
+	echo "|probably you are not running the FreeBSD|"
+	echo "|OS. Please consider using this version  |"
+	echo "|of libdnet  with the FreeBSD system     |"
+	echo "|----------------------------------------|"
+	(exit 1); exit 1;
 fi
 
 AC_CONFIG_FILES([Makefile
