@@ -1,5 +1,5 @@
 /*
- * route-bsd.c
+ * route.c
  *
  * Copyright (c) 2001 Dug Song <dugsong@monkey.org>
  * Copyright (c) 1999 Masaki Hirabaru <masaki@merit.edu>
