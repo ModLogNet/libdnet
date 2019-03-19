@@ -4,6 +4,7 @@
  * Sleazy OS-specific defines.
  *
  * Copyright (c) 2000 Dug Song <dugsong@monkey.org>
+ * Copyright (c) 2019 Muhammad Moinur Rahmman <5u623l20@protonmail.com>
  *
  * $Id$
  */
