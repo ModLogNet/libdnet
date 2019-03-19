@@ -1,6 +1,7 @@
 /*
  * intf.c
  *
+ * Copyright (c) 2019 Muhammad Moinur Rahmman <5u623l20@protonmail.com>
  * Copyright (c) 2001 Dug Song <dugsong@monkey.org>
  *
  * $Id$
