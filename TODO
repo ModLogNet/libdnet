@@ -1,4 +1,4 @@
-ipfw2 on FreeBSD/5 (5.1 has pf)
+ipfw2 on FreeBSD 11.X/12.X/HEAD
 
 optimize port wildcard rules for each firewall type - e.g. using ipf
 FR_NONE, pf PF_OP_NONE, etc.
@@ -29,41 +29,17 @@ freebsd |      |     |     |  1 |    |      |       |  ?  |
 --------+------+-----+-----+----+----+------+-------+-----+
 netbsd  |      |     |     |    |    |      |       |  ?  |
 --------+------+-----+-----+----+----+------+-------+-----+
-linux   |      |     |     |    |    |      |       |     |
---------+------+-----+-----+----+----+------+-------+-----+
-solaris |      |     |     |  7 |    |      |       |  ?  |
---------+------+-----+-----+----+----+------+-------+-----+
 macosx  |      |     |     |    |    |      |       |  ?  |
---------+------+-----+-----+----+----+------+-------+-----+
-irix    |      |     |     |  7 |    |      |       |  -  |
---------+------+-----+-----+----+----+------+-------+-----+
-bsdi    |      |     |     |  7 |    |      |       |  -  |
---------+------+-----+-----+----+----+------+-------+-----+
-tru64   |      |     |     |  7 |    |      |       |  -  |
---------+------+-----+-----+----+----+------+-------+-----+
-unixware|      |  -  |  2  |  - |  - |      |   4   |  -  |
---------+------+-----+-----+----+----+------+-------+-----+
-aix     |      |  5  |  -  |  - |  - |      |   6   |  -  |
 --------+------+-----+-----+----+----+------+-------+-----+
 
   = works, tested	1 = ipfw support, but no ipfw2
-? = untested		2 = eth_send doesn't work
-- = unimplemented	3 = intf_set doesn't work
-			4 = route_loop only works
-			5 = arp_show doesn't work
-			6 = route_loop doesn't work
-			7 = IP Filter should work, but untested
-
-arp-bsd both b0rked on unixware
+? = untested
+- = unimplemented
 
 eth_send() doesn't allow src mac spoofing on MacOS X (no
 BIOCSHDRCMPLT) without patch (http://slagheap.net/etherspoof/),
 also b0rked on BSD/OS, says markus. not possible on Tru64?
 
 no support for ICMP code in ipfw, therefore none in fw-ipfw.c
-
-need reliable, legit HP-UX, Unixware, and AIX accounts with root
-access to finish the ports to those platforms. i'd be happy to port to
-other platforms also, given similar (temporary) access.
 
 $Id$
