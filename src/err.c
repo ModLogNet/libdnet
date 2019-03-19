@@ -3,6 +3,7 @@
  *
  * Adapted from OpenBSD libc *err* *warn* code.
  *
+ * Copyright (c) 2019 Muhammad Moinur Rahmman <5u623l20@protonmail.com>
  * Copyright (c) 2000 Dug Song <dugsong@monkey.org>
  *
  * Copyright (c) 1993
