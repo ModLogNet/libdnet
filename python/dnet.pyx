@@ -15,8 +15,8 @@ and raw IP packet and Ethernet frame transmission.
 __author__ = 'Dug Song <dugsong@monkey.org>'
 __copyright__ = 'Copyright (c) 2003 Dug Song'
 __license__ = 'BSD'
-__url__ = 'http://libdnet.sourceforge.net/'
-__version__ = '1.12'
+__url__ = 'http://github.com/5u623l20/libdnet'
+__version__ = '1.13'
 
 cdef extern from "dnet.h":
     pass

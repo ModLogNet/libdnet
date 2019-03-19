@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([libdnet], [1.12])
+AC_INIT([libdnet], [1.13])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_HEADERS([include/config.h])
 AC_CONFIG_SRCDIR([include/dnet.h])
