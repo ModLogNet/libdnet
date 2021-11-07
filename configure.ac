@@ -203,7 +203,6 @@ AC_CHECK_FUNCS([gethostbyname gettimeofday memmove memset pow socket strchr strd
 AC_REPLACE_FUNCS(err strlcat strlcpy strsep)
 
 dnl Checks for other system-specific jonks.
-AC_DNET_BSD_BPF
 AC_DNET_RAWIP_HOST_OFFLEN
 
 dnl Check for arp interface.
